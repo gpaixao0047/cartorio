@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	
+		<changeSet id="0" author="guilherme.paixao">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="CARTORIO" />
+			</not>
+		</preConditions>
+		<createTable tableName="CARTORIO">
+			<column name="ID_CARTORIO" type="int" remarks="Id Cartorio"> <constraints nullable="false" />
+			</column>
+			<column name="NOME" type="varchar" remarks="Nome Cartorio">
+				<constraints nullable="false" />
+			</column>
+			<column name="ENDERECO" type="varchar" remarks="Endereco Cartorio">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<rollback>
+			<dropTable tableName="DOADOR" />
+		</rollback>
+	</changeSet>
+	
+		<changeSet id="1" author="guilherme.paixao">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<primaryKeyExists primaryKeyName="PK_CARTORIO" />
+			</not>
+		</preConditions>
+		<addPrimaryKey tableName="CARTORIO"
+			columnNames="ID_CARTORIO" constraintName="PK_CARTORIO" />
+		<rollback>
+			<dropTable tableName="CARTORIO" />
+		</rollback>
+	</changeSet>
+	
+		<changeSet id="2" author="guilherme.paixao">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<sequenceExists sequenceName="SEQ_CARTORIO" />
+			</not>
+		</preConditions>
+		<createSequence sequenceName="SEQ_CARTORIO"
+			cycle="false" />
+		<rollback>
+			<dropSequence sequenceName="SEQ_CARTORIO" />
+		</rollback>
+	</changeSet>
+	
+	<changeSet id="3" author="guilherme.paixao">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="CERTIDAO" />
+			</not>
+		</preConditions>
+		<createTable tableName="CERTIDAO">
+			<column name="ID_CERTIDAO" type="int" remarks="Id Certidao"> <constraints nullable="false" />
+			</column>
+			<column name="NOME" type="varchar" remarks="Nome Certidao">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<rollback>
+			<dropTable tableName="CERTIDAO" />
+		</rollback>
+	</changeSet>
+		<changeSet id="4" author="guilherme.paixao">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<primaryKeyExists primaryKeyName="PK_CERTIDAO" />
+			</not>
+		</preConditions>
+		<addPrimaryKey tableName="CERTIDAO"
+			columnNames="ID_CERTIDAO" constraintName="PK_CERTIDAO" />
+		<rollback>
+			<dropTable tableName="CERTIDAO" />
+		</rollback>
+	</changeSet>
+	<changeSet id="5" author="guilherme.paixao">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="CARTORIO_CERTIDAO_VINC"/>
+            </not>
+        </preConditions>
+            <createTable tableName="CARTORIO_CERTIDAO_VINC">
+            <column name="ID_CARTORIO_CERTIDAO_VINC" type="int"  remarks="Id"> <constraints nullable="false"/>
+            </column>
+            <column name="ID_CARTORIO" type="int" remarks="Id Cartorio"> <constraints nullable="false"/>
+            </column>
+            <column name="ID_CERTIDAO" type="int"  remarks="Id Certidao"> <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="CARTORIO_CERTIDAO_VINC" columnNames="ID_CARTORIO_CERTIDAO_VINC" constraintName="PK_CERTIDAO_CARTORIO_VINC"/>
+        <rollback>
+            <dropTable tableName="CARTORIO_CERTIDAO_VINC"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="6" author="guilherme.paixao">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="SEQ_CERTIDAO_CARTORIO_VINC" />
+            </not>
+        </preConditions>
+        <createSequence sequenceName="SEQ_CERTIDAO_CARTORIO_VINC"
+            cycle="false" />
+        <rollback>
+            <dropSequence sequenceName="SEQ_CERTIDAO_CARTORIO_VINC" />
+        </rollback>
+    </changeSet>
+    <changeSet id="7" author="guilherme.paixao">
+        <preConditions onFail="MARK_RAN">
+        <not>
+            <foreignKeyConstraintExists foreignKeyName="FK_CARTORIO_AV_CARTORIO"/>
+        </not>
+        </preConditions>
+        <addForeignKeyConstraint
+            baseTableName="CARTORIO_CERTIDAO_VINC" baseColumnNames="ID_CARTORIO"
+            constraintName="FK_CARTORIO_AV_CARTORIO" referencedTableName="CARTORIO"
+            referencedColumnNames="ID_CARTORIO" />
+    </changeSet>
+      <changeSet id="8" author="guilherme.paixao">
+        <preConditions onFail="MARK_RAN">
+        <not>
+            <foreignKeyConstraintExists foreignKeyName="FK_CERTIDAO_AV_CERTIDAO"/>
+        </not>
+        </preConditions>
+        <addForeignKeyConstraint
+            baseTableName="CARTORIO_CERTIDAO_VINC" baseColumnNames="ID_CERTIDAO"
+            constraintName="FK_CERTIDAO_AV_CERTIDAO" referencedTableName="CERTIDAO"
+            referencedColumnNames="ID_CERTIDAO" />
+    </changeSet>
+
+</databaseChangeLog>
