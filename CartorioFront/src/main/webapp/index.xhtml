@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<title>Cartorio</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+			crossorigin="anonymous" />
+	</h:head>
+ 
+	<h:body>
+		<div class="container mt-4">
+			<h:form id="form">
+				<p:panel style="margin: 0 auto;">
+					<p:messages closable="true" style="text-align:left;width:500px;">
+			<p:autoUpdate/>
+			</p:messages>
+				<h1>Cartório</h1>
+				<hr></hr>
+				<p:dataTable id="tabela" var="listCartorios" value="#{cartoriorCrudView.listCartorioBean}">
+				<p:column headerText="Nome do cartório">
+				<h:outputText value="#{listCartorios.nome}" />
+				</p:column>
+				<p:column headerText="Endereço Cartório" style="width:320px;">
+				<h:outputText value="#{listCartorios.endereco}" styleClass="text-align:center;" />
+				</p:column>
+				<p:column headerText="Excluir" style="width:100px">
+				<p:commandLink id="linkExcluir" value="excluir" actionListener="#{cartoriorCrudView.delete(listCartorios)}"
+				 update="form">
+				</p:commandLink>
+				</p:column>
+				<p:column headerText="Editar" style="width:100px">
+				<p:commandLink id="linkEditar" value="Editar" actionListener="#{cartoriorCrudView.editar(listCartorios)}"
+				 update="form">
+				</p:commandLink>
+				</p:column>
+				
+				</p:dataTable>
+				<h:panelGrid style="margin-top:15px;">
+				<h3>Cadastro / Edição de Cartórios</h3>
+				</h:panelGrid>
+				<h:panelGrid>
+					<p:outputLabel
+						value="Nome:" />
+					<p:inputText id="nomeCartorio"  value="#{cartoriorCrudView.nome}">
+					</p:inputText>
+				</h:panelGrid>
+				<h:panelGrid id="totalCandidatos" columns="1">
+				<h:outputLabel value="Endereço:" />
+			<p:inputText id="enderecoCartorio" value="#{cartoriorCrudView.endereco}"/>
+				</h:panelGrid>
+				<h:panelGrid id="comboBox">
+				<h:outputLabel value="Selecione o tipo de certidão:" />
+                         <p:selectCheckboxMenu id="menu" value="#{cartoriorCrudView.listCertidaoBeanParaSalvar}" label="Tipos de Certidoes" style="width: 15rem"
+                                filter="true" filterMatchMode="startsWith" panelStyle="width: 25rem" scrollHeight="250">
+            <f:selectItems value="#{cartoriorCrudView.listCertidaoBean}" var="certi" itemValue="#{certi.idCertidao}" itemLabel="#{certi.nome}"/>
+        </p:selectCheckboxMenu>
+				</h:panelGrid>
+					<h:panelGrid id="camposBtn" columns="2" style="margin-top:25px;">
+				<p:commandButton id="btnsalvar" value="Salvar"  actionListener="#{cartoriorCrudView.saveOrUpdate}" update="form:tabela"/>
+				<p:commandButton id="btnLimparCampos" value="Limpar Campos"  actionListener="#{cartoriorCrudView.limparCampos}" update="form"/>
+				</h:panelGrid>
+				</p:panel>
+			</h:form>
+
+		</div>
+
+	</h:body>
+</ui:composition>
